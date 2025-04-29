@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+## -*- coding: utf-8 -*-
 
 # ==============================================================================
 #   Author: João Manoel Feck
@@ -50,7 +50,7 @@ def main():
     logging.info(f"Input folder: {path_input}")
     logging.info(f"Output folder: {path_output}")
 
-    # Load config (only output suffix needed)
+    # Load config
     try:
         with open(path_config, 'r') as f:
             config = yaml.safe_load(f)
@@ -59,6 +59,7 @@ def main():
         sys.exit(1)
 
     output_suffix = config.get("output_suffix", "_with_subs")
+    output_format = config.get("output_format", "auto").lower()
 
     try:
         os.makedirs(path_output, exist_ok=True)
@@ -81,14 +82,22 @@ def main():
                 continue
 
             subtitle_file = subtitle_files[base_name]
-            subtitle_path = os.path.join(path_input, subtitle_file)
-            output_filename = f"{base_name}{output_suffix}.mp4"
+            subtitle_path = os.path.join(input_foldername, subtitle_file)
+            subtitle_relpath = os.path.relpath(subtitle_path, start=path_script).replace("\\", "/")
+
+            # Determine output extension
+            if output_format == "auto":
+                output_ext = ext
+            else:
+                output_ext = f".{output_format}"
+
+            output_filename = f"{base_name}{output_suffix}{output_ext}"
             output_path = os.path.join(path_output, output_filename)
 
             logging.info(f"Burning subtitles into: {video_file}")
             try:
-                subtitle_path_escaped = f'"{subtitle_path}"'
-                ffmpeg.input(video_path).output(output_path, vf=f"subtitles={subtitle_path_escaped}").run()
+                vf_filter = f"subtitles='{subtitle_relpath}'"
+                ffmpeg.input(video_path).output(output_path, vf=vf_filter).run(overwrite_output=True)
                 logging.info(f"Output saved: {output_filename}")
             except Exception as e:
                 logging.error(f"Failed to process {video_file}: {e}")

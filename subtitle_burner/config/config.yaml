@@ -1,1 +1,2 @@
 output_suffix: _with_subs
+output_format: auto  # options: 'auto', 'mp4', 'mkv', 'avi'

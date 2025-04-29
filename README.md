@@ -14,7 +14,7 @@ Each function is organized into its own folder within the repository to allow ea
 
 ---
 
-## Functions and status
+## Functions
 
 - ✅ [subtitle-generator](./subtitle_generator): Generates `.srt` subtitle files from video files using OpenAI Whisper.
 - ✅ [subtitle-burner](./subtitle_burner): Burns `.srt` subtitles into a video file using `ffmpeg`.

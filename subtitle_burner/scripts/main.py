@@ -15,6 +15,7 @@ import ffmpeg
 
 # Program metadata
 PROGRAM_NAME = "Subtitle Burner"
+SUPPORTED_VIDEO_EXTENSIONS = [".mp4", ".mkv", ".avi"]
 
 def main():
     # Timestamp
@@ -49,7 +50,7 @@ def main():
     logging.info(f"Input folder: {path_input}")
     logging.info(f"Output folder: {path_output}")
 
-    # Load config
+    # Load config (only output suffix needed)
     try:
         with open(path_config, 'r') as f:
             config = yaml.safe_load(f)
@@ -57,21 +58,43 @@ def main():
         logging.error(f"Failed to load config.yaml: {e}")
         sys.exit(1)
 
-    # Get parameters
-    subtitle_file = config.get("subtitle_file", "subtitles.srt")
     output_suffix = config.get("output_suffix", "_with_subs")
-
-    input_video_path = os.path.join(path_input, "video.mp4")
-    subtitle_path = os.path.join(path_input, subtitle_file)
-    output_video_path = os.path.join(path_output, f"video{output_suffix}.mp4")
 
     try:
         os.makedirs(path_output, exist_ok=True)
-        ffmpeg.input(input_video_path).output(output_video_path, vf=f"subtitles={subtitle_path}").run()
-        logging.info(f"Successfully burned subtitles into video.")
-        logging.info(f"Output saved to {output_video_path}")
+
+        # Get all .srt and video files
+        files = os.listdir(path_input)
+        video_files = [f for f in files if os.path.splitext(f)[1].lower() in SUPPORTED_VIDEO_EXTENSIONS]
+        subtitle_files = {os.path.splitext(f)[0]: f for f in files if f.endswith(".srt")}
+
+        if not video_files:
+            logging.warning("No video files found.")
+            sys.exit(0)
+
+        for video_file in video_files:
+            base_name, ext = os.path.splitext(video_file)
+            video_path = os.path.join(path_input, video_file)
+
+            if base_name not in subtitle_files:
+                logging.warning(f"No matching subtitle found for {video_file}, skipping.")
+                continue
+
+            subtitle_file = subtitle_files[base_name]
+            subtitle_path = os.path.join(path_input, subtitle_file)
+            output_filename = f"{base_name}{output_suffix}.mp4"
+            output_path = os.path.join(path_output, output_filename)
+
+            logging.info(f"Burning subtitles into: {video_file}")
+            try:
+                subtitle_path_escaped = f'"{subtitle_path}"'
+                ffmpeg.input(video_path).output(output_path, vf=f"subtitles={subtitle_path_escaped}").run()
+                logging.info(f"Output saved: {output_filename}")
+            except Exception as e:
+                logging.error(f"Failed to process {video_file}: {e}")
+
     except Exception as e:
-        logging.error(f"Error during ffmpeg processing: {e}")
+        logging.error(f"General error: {e}")
         sys.exit(1)
 
     logging.info("Subtitle Burning Process Completed")

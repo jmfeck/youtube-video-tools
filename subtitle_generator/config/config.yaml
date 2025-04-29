@@ -1,1 +1,2 @@
 model_size: small
+device: cpu

@@ -11,7 +11,7 @@ import sys
 import yaml
 import logging
 from datetime import datetime
-import whisper  # OpenAI's Whisper library
+from faster_whisper import WhisperModel  # Use faster-whisper instead of whisper
 
 # Program metadata
 PROGRAM_NAME = "Subtitle Generator"
@@ -62,11 +62,12 @@ def main():
 
     # Get parameters
     model_size = config.get("model_size", "small")  # tiny, base, small, medium, large
+    device = config.get("device", "cpu")  # cpu or cuda
 
     try:
         os.makedirs(path_output, exist_ok=True)
-        logging.info(f"Loading Whisper model '{model_size}'...")
-        model = whisper.load_model(model_size)
+        logging.info(f"Loading Whisper model '{model_size}' on device '{device}'...")
+        model = WhisperModel(model_size, device=device)
 
         # List all video files
         video_files = [
@@ -101,16 +102,13 @@ def main():
             logging.info(f"Processing {video_file}...")
 
             try:
-                result = model.transcribe(input_video_path)
+                segments, info = model.transcribe(input_video_path)
 
                 with open(output_srt_path, "w", encoding="utf-8") as srt_file:
-                    for idx, segment in enumerate(result["segments"]):
-                        start = segment["start"]
-                        end = segment["end"]
-                        text = segment["text"].strip()
-
-                        start_timestamp = format_timestamp(start)
-                        end_timestamp = format_timestamp(end)
+                    for idx, segment in enumerate(segments):
+                        start_timestamp = format_timestamp(segment.start)
+                        end_timestamp = format_timestamp(segment.end)
+                        text = segment.text.strip()
 
                         srt_file.write(f"{idx+1}\n")
                         srt_file.write(f"{start_timestamp} --> {end_timestamp}\n")

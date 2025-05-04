@@ -1,2 +1,17 @@
-model_size: small
-device: cpu
+# Whisper model size options (be careful: larger models require powerful hardware):
+#  tiny       # Very fast, low accuracy — runs on any CPU
+#  base       # Fast, better than tiny — good for real-time needs
+#  small      # Good balance — works well on most modern CPUs (8 GB RAM)
+#  medium     # High accuracy — slow on CPU, better with GPU (6–8 GB VRAM)
+#  large-v1   # Very high accuracy — GPU strongly recommended (RTX 3080+)
+#  large-v2   # Improved version of v1 — same hardware requirements
+#  large-v3   # Most accurate and recent — use only with high-end GPUs (12+ GB VRAM)
+
+model_size: small  # set to small to run in most devices
+
+# Device options:
+#  cpu   # Run on the system's processor (works everywhere, slower)
+#  cuda  # Run on NVIDIA GPU using CUDA (much faster, requires compatible GPU + drivers)
+#  auto  # Automatically selects 'cuda' if a compatible GPU is available, otherwise falls back to 'cpu'
+
+device: cpu  # set to small to run in most devices

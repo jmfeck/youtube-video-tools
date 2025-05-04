@@ -10,10 +10,13 @@ subtitle_generator/input/*
 subtitle_generator/output/*
 subtitle_generator/logs/*
 
-
 subtitle_burner/input/*
 subtitle_burner/output/*
 subtitle_burner/logs/*
+
+subtitle_translator/input/*
+subtitle_translator/output/*
+subtitle_translator/logs/*
 
 # Ignore testing batch (with venv activation)
 */temp_run_app.bat

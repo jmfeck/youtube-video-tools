@@ -1,0 +1,62 @@
+# Language to transcribe from:
+# - Use 'auto' to detect automatically
+# - Or set explicitly, e.g. 'en', 'pt', 'de', etc.
+input_language: auto
+
+# List of output subtitle languages (use language codes):
+# - Can include one or more languages
+# - Example: ['es', 'pt', 'de']
+output_languages:
+  - es
+  - pt
+  - de
+  - en
+
+# Available language codes for Argos Translate:
+# sq - Albanian
+# en - English
+# ar - Arabic
+# az - Azerbaijani
+# eu - Basque
+# bn - Bengali
+# bg - Bulgarian
+# ca - Catalan
+# zt - Chinese (traditional)
+# zh - Chinese
+# cs - Czech
+# da - Danish
+# nl - Dutch
+# eo - Esperanto
+# et - Estonian
+# fi - Finnish
+# fr - French
+# gl - Galician
+# de - German
+# el - Greek
+# he - Hebrew
+# hi - Hindi
+# hu - Hungarian
+# id - Indonesian
+# ga - Irish
+# it - Italian
+# ja - Japanese
+# ko - Korean
+# lv - Latvian
+# lt - Lithuanian
+# ms - Malay
+# nb - Norwegian
+# fa - Persian
+# pl - Polish
+# pt - Portuguese
+# pb - Portuguese (Brazil)
+# ro - Romanian
+# ru - Russian
+# sk - Slovak
+# sl - Slovenian
+# es - Spanish
+# sv - Swedish
+# tl - Tagalog
+# th - Thai
+# tr - Turkish
+# uk - Ukrainian
+# ur - Urdu

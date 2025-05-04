@@ -67,13 +67,61 @@ This project is under active development. Expect frequent updates and new tools.
 - ❌ [speed_changer](./speed_changer): Speed up or slow down videos in batch processing.
 - ❌ [video_splitter](./video_splitter): Split video into parts based on user-defined time ranges.
 
+## Setup Instructions
+
+To run any of the tools in this project, follow these steps:
+
+### 1. Create a virtual environment (recommended)
+
+It's best practice to isolate dependencies using a virtual environment:
+
+```bash
+python -m venv venv
+```
+
+Then activate it:
+
+- On **Windows**:
+  ```bash
+  .\venv\Scripts\activate
+  ```
+
+- On **macOS/Linux**:
+  ```bash
+  source venv/bin/activate
+  ```
+
+### 2. Install dependencies
+
+Each tool folder may contain its own `requirements.txt`.  
+Install the dependencies using:
+
+```bash
+pip install -r requirements.txt
+```
+
+You can also generate your own `requirements.txt` after installing packages:
+
+```bash
+pip freeze > requirements.txt
+```
+
+### 3. Run the tool
+
+Navigate to the desired tool folder (e.g., `subtitle_generator`) and execute the main script:
+
+```bash
+cd subtitle_generator
+python scripts/main.py
+```
+
 ## Contributing
 
 Contributions are welcome!  
 To contribute:
 
-1. Fork this repository
-2. Create your tool based on the folder structure (`input/`, `output/`, `config/`, `logs/`, `scripts/`)
+1. Fork this repository  
+2. Create your tool based on the folder structure (`input/`, `output/`, `config/`, `logs/`, `scripts/`)  
 3. Submit a pull request
 
 You can also open issues to report bugs or suggest features.
